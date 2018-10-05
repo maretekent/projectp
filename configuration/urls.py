@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from app_dir.api.views import PaymentFlow, login, sample_api
 
 urlpatterns = [
@@ -22,4 +24,6 @@ urlpatterns = [
     path('api/pay/', PaymentFlow.as_view(), name="payment-flow"),
     path('api/login', login),
     path('api/sampleapi', sample_api),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

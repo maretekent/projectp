@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     "app_dir.api",
+    "rest_framework.authtoken",
 ]
 
 MIDDLEWARE = [
@@ -126,6 +127,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+BASE_URL = os.environ.get("BASE_URL", "https://localhost:8090/")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -133,7 +135,12 @@ USE_TZ = True
 STATIC_URL = os.environ.get("STATIC_URL", "/static/")
 DEFAULT_STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, "static"))
 STATIC_ROOT = os.environ.get("STATIC_ROOT", DEFAULT_STATIC_ROOT)
-
+# STATICFILES_DIRS = (
+#     os.path.abspath(
+#         os.path.join(PROJECT_DIR, "static")
+#     ),
+# )
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, "/media"))
 
@@ -184,11 +191,11 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {"max_retries": 2}
 
 # celery configs
 
-CELERY_ROUTES = {
-    "tasks.send_new_email_task": {"queue": "send_new_email_task"},
-    "tasks.extract_new_emails": {"queue": "extract_new_emails"},
-    "task.send_out_welcome_emails": {"queue": "send_out_welcome_emails"},
-}
+# CELERY_ROUTES = {
+#     "tasks.send_new_email_task": {"queue": "send_new_email_task"},
+#     "tasks.extract_new_emails": {"queue": "extract_new_emails"},
+#     "task.send_out_welcome_emails": {"queue": "send_out_welcome_emails"},
+# }
 
 CELERY_ENABLE_REMOTE_CONTROL = True
 BROKER_HEARTBEAT = 10
