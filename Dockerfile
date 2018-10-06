@@ -13,13 +13,11 @@ RUN apt-get -y install gnupg \
     curl \
     zip
 
-
-#RUN pip3 install -r ./requirements/${ENVIRONMENT}.txt
+RUN pip install --upgrade pip
 
 # Install Python deps
 RUN pip install --no-cache-dir -r ./requirements/${ENVIRONMENT}.txt
 
 RUN python3 manage.py collectstatic --noinput
-#END
 
-CMD ["/bin/bash", "./run.sh"]
+CMD ./devops/scripts/wait-for-it.sh -t 300 db:5432 && ./devops/scripts/run.sh

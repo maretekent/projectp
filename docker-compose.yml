@@ -9,6 +9,9 @@ services:
       - DB_PORT=5432
       - DJANGO_SETTINGS_MODULE=configuration.settings.development
       - BASE_URL=http://localhost:8090
+      - DEV_LOGIN_USERNAME=admin
+      - DEV_LOGIN_PASSWORD=admin
+      - DEV_LOGIN_EMAIL=admin@example.com
     build:
       context: .
       args:

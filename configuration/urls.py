@@ -21,7 +21,7 @@ from app_dir.api.views import PaymentFlow, login, sample_api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/pay/', PaymentFlow.as_view(), name="payment-flow"),
+    path('api/pay', PaymentFlow.as_view(), name="payment-flow"),
     path('api/login', login),
     path('api/sampleapi', sample_api),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

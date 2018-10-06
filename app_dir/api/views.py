@@ -11,6 +11,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK
 
+from app_dir.api.utils import IsPermittedCreateView
+
 logger = get_logger(__name__)
 
 
@@ -36,6 +38,7 @@ def login(request):
 @api_view(["GET"])
 def sample_api(request):
     data = {"sample_data": 123}
+    logger.info("sample_api", data=data)
     return Response(data, status=HTTP_200_OK)
 
 
@@ -45,8 +48,11 @@ class PaymentFlow(APIView):
         authentication.TokenAuthentication,
         authentication.SessionAuthentication,
     )
-    permission_classes = (AllowAny,)
+    permission_classes = (IsPermittedCreateView,)
 
     def post(self, request):
-        logger.info("PaymentFlow", data=request.data)
+        data = request.data
+        logger.info("PaymentFlow", data=data)
+        return Response(data, status=HTTP_200_OK)
+
 

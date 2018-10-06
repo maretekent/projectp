@@ -12,3 +12,4 @@ pytz==2018.5
 six==1.11.0
 structlog==18.2.0
 vine==1.1.4
+psycopg2==2.7.3
