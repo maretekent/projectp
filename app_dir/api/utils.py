@@ -5,7 +5,6 @@ logger = get_logger(__name__)
 
 
 class IsAdminOrPermitted(permissions.BasePermission):
-    @staticmethod
     def has_permission(self, request, view):
         user = request.user
         return user.is_superuser or user.has_perm(
@@ -14,7 +13,6 @@ class IsAdminOrPermitted(permissions.BasePermission):
 
 
 class IsPermittedCreateView(permissions.BasePermission):
-    @staticmethod
     def has_permission(self, request, view):
         user = request.user
         return user.has_perm(

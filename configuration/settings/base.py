@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     "app_dir.api",
     "rest_framework.authtoken",
+    "rolepermissions",
 ]
 
 MIDDLEWARE = [
@@ -159,6 +160,7 @@ LOGGING = {
     },
 }
 
+ROLEPERMISSIONS_MODULE = 'configuration.settings.roles'
 
 def configure_structlog(environment):
     structlog_processors = [
