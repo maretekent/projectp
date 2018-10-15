@@ -17,12 +17,21 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from app_dir.api.views import PaymentFlow, login, sample_api
+from app_dir.api.views import (
+    PaymentFlow, 
+    PaymentView, 
+    login, 
+    validate_payment, 
+    confirm_payment,
+    sample_api)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/pay', PaymentFlow.as_view(), name="payment-flow"),
     path('api/login', login),
+    path('api/payments/', PaymentView.as_view(), name="payments"),
+    path('api/payments/validate/', validate_payment),
+    path('api/payments/confirm/', confirm_payment),
     path('api/sampleapi', sample_api),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
