@@ -60,3 +60,5 @@ ENV/
 .DS_Store
 .vagrant
 .vscode
+/app_dir/*/migrations/*
+!/app_dir/*/migrations/__init__.py
