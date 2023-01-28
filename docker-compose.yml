@@ -21,7 +21,7 @@ services:
     volumes:
       - ./:/usr/src/app
     ports:
-      - 8090:80
+      - 8030:80
     links:
       - db
 
@@ -31,36 +31,36 @@ services:
         - POSTGRES_DB=payment_api
         - POSTGRES_PASSWORD=root
       ports:
-        - 5632:5432
+        - 5532:5432
 
-  rabbitmq:
-      image: gonkulatorlabs/rabbitmq:3.6.1
-      ports:
-        - 15690:15672
-        - 5675:5671
-        - 5676:5672
-
-  worker:
-      build:
-        context: .
-        args:
-          - ENVIRONMENT=development
-      depends_on:
-        - db
-        - rabbitmq
-      command: ./devops/docker/worker_server.sh
-      volumes:
-        - ./:/usr/src/app
-      links:
-        - db
-        - rabbitmq
-      environment:
-        - DB_NAME=payment_api
-        - DB_USER=postgres
-        - DB_PASSWORD=root
-        - DB_HOST=db
-        - DB_PORT=5432
-        - C_FORCE_ROOT=true
-        - DJANGO_SETTINGS_MODULE=configuration.settings.development
-      ports:
-        - 5555:5555
+#  rabbitmq:
+#      image: gonkulatorlabs/rabbitmq:3.6.1
+#      ports:
+#        - 15690:15672
+#        - 5675:5671
+#        - 5676:5672
+#
+#  worker:
+#      build:
+#        context: .
+#        args:
+#          - ENVIRONMENT=development
+#      depends_on:
+#        - db
+#        - rabbitmq
+#      command: ./devops/docker/worker_server.sh
+#      volumes:
+#        - ./:/usr/src/app
+#      links:
+#        - db
+#        - rabbitmq
+#      environment:
+#        - DB_NAME=payment_api
+#        - DB_USER=postgres
+#        - DB_PASSWORD=root
+#        - DB_HOST=db
+#        - DB_PORT=5432
+#        - C_FORCE_ROOT=true
+#        - DJANGO_SETTINGS_MODULE=configuration.settings.development
+#      ports:
+#        - 5555:5555
