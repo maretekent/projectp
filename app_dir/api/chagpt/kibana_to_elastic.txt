@@ -1,0 +1,24 @@
+Here are the steps to start the Kibana service and configure it to connect to your Elasticsearch instance:
+
+Download and install the Kibana package from the Elastic website, following the instructions for your operating system.
+
+Once installed, navigate to the Kibana configuration file, typically located at /etc/kibana/kibana.yml.
+
+In the configuration file, set the server.host property to the IP address or hostname of the machine running Kibana and
+the elasticsearch.hosts property to the URL of your Elasticsearch instance. For example:
+
+server.host: "192.168.1.100"
+elasticsearch.hosts: ["http://localhost:9200"]
+
+
+Save the configuration file and start the Kibana service by running the following command:
+
+sudo systemctl start kibana
+
+Open your web browser and navigate to the Kibana URL, which is typically http://<server_host>:5601.
+You should see the Kibana login page.
+
+You can now start using Kibana to search, visualize, and analyze your logs.
+
+Note that the steps may vary depending on your operating system, the version of Kibana and Elasticsearch you are using,
+and your specific use case. You can refer to the Kibana documentation for more information and examples.

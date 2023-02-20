@@ -12,7 +12,6 @@ class Feed(models.Model):
 	description = models.TextField(blank=True)
 	language = models.CharField(max_length=50, blank=True)
 	logo = models.URLField(blank=True)
-
 	sections = models.ManyToManyField(Section, related_name="feeds")
 
 

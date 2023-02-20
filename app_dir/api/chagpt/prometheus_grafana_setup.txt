@@ -1,0 +1,62 @@
+Setting up Prometheus and Grafana on a Django project involves several steps:
+
+Install Prometheus: Prometheus is a monitoring system that can be used to collect metrics from your Django application.
+ To install Prometheus, you can download the binary from the Prometheus website, or use a package manager like apt or
+  yum.
+
+Install Grafana: Grafana is a visualization tool that can be used to display the metrics collected by Prometheus.
+To install Grafana, you can download the binary from the Grafana website, or use a package manager like apt or yum.
+
+Configure Prometheus to scrape metrics from your Django application. This typically involves creating a Prometheus
+configuration file (prometheus.yml) that specifies the endpoint(s) that Prometheus should scrape, as well as any
+additional scrape configuration options.
+
+Start Prometheus and Grafana: Once Prometheus and Grafana are installed, you can start them by running the appropriate
+binary or service command.
+
+Configure Grafana to connect to Prometheus: To connect Grafana to Prometheus, you will need to add Prometheus as a data
+ source in Grafana. This typically involves specifying the URL of the Prometheus endpoint and any necessary
+ authentication information.
+
+Create a Dashboard: Once Grafana is connected to Prometheus, you can create a dashboard to display the metrics
+collected by Prometheus. You can use the Grafana UI to create new panels, and customize the visualization of the metrics.
+
+Use Prometheus python client library to expose metrics from your Django application, for example, django_prometheus
+is a popular library that can be used to expose metrics from Django views, models and other components of your
+application.
+
+Collecting metrics in Django: Once you've set up Prometheus and Grafana, you can use the Prometheus client library
+to collect metrics from your Django application. This typically involves instrumenting your code to record metrics,
+such as request durations, exception rates, and other performance-related data.
+
+This is a general overview of the steps involved in setting up Prometheus and Grafana on a Django project. Each step
+has its own details and subtleties that you should be aware of as you proceed.
+
+
+
+The Prometheus Python client library provides a way to expose metrics from your Django application.
+One popular library is django_prometheus. Here are the general steps to use django_prometheus to expose metrics
+from your Django application:
+
+Install the django_prometheus package: You can install the django_prometheus package by running pip install
+django_prometheus or by adding it to your requirements.txt file.
+
+Add django_prometheus to your INSTALLED_APPS setting in settings.py: This will enable the django_prometheus app
+in your Django project.
+
+Add django_prometheus.middleware.PrometheusBeforeMiddleware and django_prometheus.middleware.PrometheusAfterMiddleware
+ to the MIDDLEWARE setting in settings.py: This will enable the middleware that will collect the metrics.
+
+Create a Prometheus endpoint: In your urls.py file, add an endpoint for Prometheus to scrape. For example:
+
+
+Collecting metrics: Now the library will start collecting metrics for the views, models and other components of your
+application, as well as Django's internal metrics like request duration, database queries and more.
+
+Configure Prometheus: You will need to configure Prometheus to scrape the metrics exposed by your Django application.
+ You can do this by adding a scrape configuration in the Prometheus configuration file (prometheus.yml) that specifies
+ the URL of the Prometheus endpoint you created in step 4, as well as any necessary authentication information.
+
+You should now be able to see metrics for your Django application in Prometheus and visualization in Grafana.
+Please note that this is a general overview of the steps involved in using django_prometheus library, you should refer
+to the library's documentation and examples for more information and details.

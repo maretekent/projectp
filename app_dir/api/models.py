@@ -227,4 +227,166 @@ class Waiter(models.Model):
 # >>> Post.objects.order_by('-created_date')
 # <QuerySet [<Post: 4th title of post>,  <Post: My 3rd post!>, <Post: Post number 2>, <Post: Sample title>]>
 
+# prefetch_related  vs select_relateds
+
+
+# The select_related method is used to fetch related objects with a single database query.
+# It is useful when you want to fetch data from multiple tables in a single query, as it reduces the number of
+# database queries. For example:
+
+posts = Post.objects.select_related('author').all()
+for post in posts:
+    print(post.title)
+    print(post.author.name)
+
+# In this example, the Post model has a foreign key to the Author model, and the select_related method is used to
+#
+# fetch data from both tables in a single query. The result is a queryset of Post objects with the related Author
+# objects loaded.
+#
+# The prefetch_related method is used to fetch related objects with multiple database queries. It is useful when you
+# want to fetch data from multiple related tables, as it reduces the number of database queries compared to fetching
+# each related table separately. For example:
+
+posts = Post.objects.prefetch_related('comments').all()
+for post in posts:
+    print(post.title)
+    for comment in post.comments.all():
+        print(comment.text)
+
+# In this example, the Post model has a many-to-many relationship with the Comment model,
+# and the prefetch_related method is used to fetch data from both tables in multiple queries.
+# The result is a queryset of Post objects with the related Comment objects loaded.
+
+
+
+
+Kenneth Marete
+django roles permission library usage
+There are several libraries available in Django to handle role-based permissions, some popular ones include:
+
+django-guardian: This library provides a simple way to manage object-level permissions in Django. It integrates with the Django authentication system and allows you to define custom permissions for your models.
+
+django-role-permissions: This library provides an easy way to define role-based permissions in Django. It uses the Django authentication system and allows you to assign roles to users and define custom permissions for each role.
+
+django-rules: This library provides a simple way to define rule-based permissions in Django. It allows you to define permissions based on conditions, such as a user's group membership or the object being accessed.
+
+Here's an example of how to use django-guardian:
+
+python
+Copy code
+# models.py
+from django.contrib.auth.models import User
+from guardian.shortcuts import assign_perm
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+# views.py
+from guardian.mixins import PermissionRequiredMixin
+
+class BookDetailView(PermissionRequiredMixin, DetailView):
+    model = Book
+    permission_required = 'books.view_book'
+
+# assign permission to user
+book = Book.objects.first()
+user = User.objects.first()
+assign_perm('books.view_book', user, book)
+In this example, django-guardian is used to define a custom permission for viewing a book (books.view_book). The BookDetailView is a class-based view that requires the user to have the books.view_book permission in order to access the book detail page. The permission is assigned to a user for a specific book using the assign_perm function.
+
+
+
+
+Kenneth Marete
+django-role-permissions usage
+Here's an example of how to use django-role-permissions:
+
+python
+Copy code
+# models.py
+from django.contrib.auth.models import User
+from rolepermissions.roles import assign_role
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+# roles.py
+from rolepermissions.roles import AbstractUserRole
+
+class Author(AbstractUserRole):
+    available_permissions = {
+        'view_book': True,
+        'add_book': True,
+    }
+
+# views.py
+from rolepermissions.decorators import has_role_decorator
+
+@has_role_decorator('author')
+def add_book(request):
+    # code to add a book
+    pass
+
+# assign role to user
+user = User.objects.first()
+assign_role(user, 'author')
+In this example, django-role-permissions is used to define a role Author with two permissions (view_book and add_book). The add_book view is decorated with the has_role_decorator to check if the user has the author role before allowing them to add a book. The role is assigned to a user using the assign_role function.
+
+
+
+
+Kenneth Marete
+django classview based put method to update many to one field
+Here's an example of a Django class-based view using the PUT method to update a foreign key relationship:
+
+kotlin
+Copy code
+# models.py
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class User(models.Model):
+    username = models.CharField(max_length=100)
+
+# serializers.py
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+# views.py
+class BookUpdateView(APIView):
+    def put(self, request, pk):
+        book = get_object_or_404(Book, pk=pk)
+        serializer = BookSerializer(book, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+In this example, a BookUpdateView class is defined to handle PUT requests for updating a book. The view uses the get_object_or_404 function to retrieve the book based on the primary key (pk) provided in the URL. The BookSerializer is then used to validate the data in the PUT request and to update the book. If the serializer is valid, the updated book data is returned in the response. If the serializer is not valid, an error response is returned with a status code of 400 Bad Request.
+
+
+
+Here's an example of how to loop through a list of objects in a Django request:
+
+ruby
+Copy code
+# views.py
+class BookCreateView(APIView):
+    def post(self, request):
+        books = request.data.get('books')
+        for book in books:
+            # access each book object
+            title = book.get('title')
+            author = book.get('author')
+            # ... process each book object
+        # ... process the entire list of books
+        return Response({'message': 'Books processed'})
+In this example, a BookCreateView class is defined to handle POST requests for creating books. The view uses the request.data property to access the data in the request. The request.data.get('books') method is used to retrieve the list of books from the request data. The view then uses a for loop to iterate over each book in the list and access its properties. The code inside the for loop can be used to process each book as needed. Finally, the view returns a response indicating that the books have been processed.
+
+
 
