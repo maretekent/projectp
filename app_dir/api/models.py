@@ -261,20 +261,20 @@ for post in posts:
 
 
 
-Kenneth Marete
-django roles permission library usage
-There are several libraries available in Django to handle role-based permissions, some popular ones include:
-
-django-guardian: This library provides a simple way to manage object-level permissions in Django. It integrates with the Django authentication system and allows you to define custom permissions for your models.
-
-django-role-permissions: This library provides an easy way to define role-based permissions in Django. It uses the Django authentication system and allows you to assign roles to users and define custom permissions for each role.
-
-django-rules: This library provides a simple way to define rule-based permissions in Django. It allows you to define permissions based on conditions, such as a user's group membership or the object being accessed.
-
-Here's an example of how to use django-guardian:
-
-python
-Copy code
+# Kenneth Marete
+# django roles permission library usage
+# There are several libraries available in Django to handle role-based permissions, some popular ones include:
+#
+# django-guardian: This library provides a simple way to manage object-level permissions in Django. It integrates with the Django authentication system and allows you to define custom permissions for your models.
+#
+# django-role-permissions: This library provides an easy way to define role-based permissions in Django. It uses the Django authentication system and allows you to assign roles to users and define custom permissions for each role.
+#
+# django-rules: This library provides a simple way to define rule-based permissions in Django. It allows you to define permissions based on conditions, such as a user's group membership or the object being accessed.
+#
+# Here's an example of how to use django-guardian:
+#
+# python
+# Copy code
 # models.py
 from django.contrib.auth.models import User
 from guardian.shortcuts import assign_perm

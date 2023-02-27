@@ -147,3 +147,63 @@ MIDDLEWARE = [
     ...
 ]
 
+##################################################################################
+# Django's AbstractUser model is a base class that you can use to create your own custom user model. It provides a ' \
+# 	  'lot of fields and methods out of the box, and you can also add your own.
+#
+# To use groups and permissions with your custom user model, you need to define the model and then configure the
+# settings in your Django project. Here's an example:
+
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.db import models
+
+class CustomUser(AbstractUser):
+    # add any additional fields you need
+
+    def has_perm(self, perm, obj=None):
+        # check if user has permission
+        return self.is_superuser or self.groups.filter(
+            permissions__codename=perm).exists()
+
+    def has_module_perms(self, app_label):
+        # check if user has permission for app
+        return self.is_superuser or self.groups.filter(
+            permissions__content_type__app_label=app_label).exists()
+
+    @property
+    def get_groups(self):
+        # get all groups for user
+        return self.groups.all()
+
+    @property
+    def get_permissions(self):
+        # get all permissions for user
+        return Permission.objects.filter(
+            Q(group__user=self) | Q(user=self)).distinct()
+
+# In this example, we have defined a CustomUser model that extends the AbstractUser model. We have also defined
+# two methods to check if the user has a specific permission or if they have permissions for a specific app.
+#
+# We have also defined two properties: get_groups and get_permissions. These properties allow us to get all of the
+# groups and permissions for a user, respectively.
+#
+# To use groups and permissions with this custom user model, you need to configure the AUTH_USER_MODEL,
+# AUTH_GROUP_MODEL, and AUTH_PERMISSION_MODEL settings in your Django project's settings:
+
+AUTH_USER_MODEL = 'yourapp.CustomUser'
+AUTH_GROUP_MODEL = 'auth.Group'
+AUTH_PERMISSION_MODEL = 'auth.Permission'
+
+# Once you have configured these settings, you can use groups and permissions with your custom user model just
+# like you would with the default User model. For example, to add a user to a group:
+
+user = CustomUser.objects.get(username='example')
+group = Group.objects.get(name='example_group')
+user.groups.add(group)
+
+
+user = CustomUser.objects.get(username='example')
+if user.has_perm('example_permission'):
+    # do something
+
+
