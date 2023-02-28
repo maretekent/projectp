@@ -207,3 +207,67 @@ if user.has_perm('example_permission'):
     # do something
 
 
+##############################################################################
+
+	# How
+	# to
+	# add
+	# Custom
+	# Permissions
+	# to
+	# Views
+	# Just
+	# like
+	# when
+	# you
+	# were
+	# working
+	# with the built- in Django permissions, you can also add custom permissions to views by using the
+	# permission_required decorator or, in a class -based view, using the PermissionRequiredMixin.For function-
+	# based views:
+
+	from django.contrib.auth.decorators import permission_required
+
+
+	@permission_required('app.change_name')
+	def the_view(request):
+		pass
+		# ...
+
+
+	# For
+
+	# class -based views:
+
+
+	from django.contrib.auth.mixins import PermissionRequiredMixin
+
+
+	class MyView(PermissionRequiredMixin, View):
+		permission_required = 'app.change_name'
+		# Or multiple permissions
+		permission_required = ('app.change_name', 'app.edit_name')
+	# Note that 'catalog.can_edit' is just an example, you can replace it with
+	# whatever permissions you have created
+
+
+# https://testdriven.io/blog/django-permissions/#:~:text=With%20Django%2C%20you%20can%20create,auth.
+
+# Create user groups
+user_roles = ["Read only", "Maintainer"]
+for name in user_roles:
+	Group.objects.create(name=name)
+
+# Permissions have to be created before applying them
+for app_config in apps.get_app_configs():
+	app_config.models_module = True
+	create_permissions(app_config, verbosity=0)
+	app_config.models_module = None
+
+# Assign model-level permissions to maintainers
+all_perms = Permission.objects.all()
+maintainer_perms = [i for i in all_perms if i.content_type.app_label == "batteryDB"]
+Group.objects.get(name="Maintainer").permissions.add(*maintainer_perms)
+
+
+# because superusers always have permission to do anything, even if that permission doesn’t exist.
